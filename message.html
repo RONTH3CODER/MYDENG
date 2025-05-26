@@ -1,0 +1,260 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Dramatic Message</title>
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      background: radial-gradient(circle, #000 0%, #1a1a1a 100%);
+      color: white;
+      font-family: 'Courier New', monospace;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      min-height: 100vh;
+      overflow-x: hidden;
+      padding: 20px;
+    }
+
+    img {
+      width: 200px;
+      height: auto;
+      border-radius: 10px;
+      margin: 20px 0;
+      opacity: 0;
+      transform: translateY(20px);
+      animation-fill-mode: forwards;
+      transition: opacity 1s ease;
+    }
+
+    .message {
+      font-size: 2rem;
+      max-width: 90vw;
+      text-align: center;
+      line-height: 1.5;
+      letter-spacing: 2px;
+      margin: 0 20px;
+      user-select: none;
+      min-height: 6rem;
+      white-space: pre-wrap;
+      transition: opacity 1s ease;
+    }
+
+    .letter {
+      display: inline-block;
+      opacity: 0;
+      transform: translateY(10px);
+      animation: fadeInLetter 0.05s ease forwards;
+    }
+
+    @keyframes fadeInLetter {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Image animations */
+    @keyframes fadeSlideInTop {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    @keyframes fadeSlideInBottom {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    /* Buttons */
+    .button-container {
+      margin-top: 40px;
+      display: flex;
+      gap: 20px;
+    }
+
+    button {
+      background-color: #222;
+      border: 2px solid #fff;
+      color: white;
+      padding: 10px 25px;
+      font-size: 1.5rem;
+      cursor: pointer;
+      border-radius: 6px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    button:hover {
+      background-color: white;
+      color: #222;
+    }
+
+ /* Question container */
+#question {
+  display: none;
+  margin-top: 40px;
+  font-size: 2rem;
+  text-align: center; /* center text */
+  opacity: 0;
+  transition: opacity 1s ease;
+  width: 100%; /* take full width */
+  max-width: 400px; /* optional max width */
+  margin-left: auto;
+  margin-right: auto;
+}
+
+/* Show question */
+#question.show {
+  display: block;
+  opacity: 1;
+}
+
+/* Button container */
+.button-container {
+  margin-top: 20px; /* less margin for a tighter look */
+  display: flex;
+  justify-content: center; /* center buttons horizontally */
+  gap: 20px;
+}
+
+  </style>
+</head>
+<body>
+
+  <img id="photo1" src="photo1.jpg" alt="Photo 1" style="animation: fadeSlideInTop 2s ease forwards; animation-delay: 0.5s;" />
+  <div class="message" id="animated-message"></div>
+  <img id="photo2" src="photo2.jpg" alt="Photo 2" style="animation: fadeSlideInBottom 2s ease forwards; animation-delay: 5s;" />
+
+  <img id="photo3" src="photo3.jpg" alt="Photo 3" style="opacity: 0; margin-top: 30px;" />
+  <div class="message" id="second-message" style="opacity: 0;"></div>
+  <img id="photo4" src="photo4.jpg" alt="Photo 4" style="opacity: 0; margin-top: 20px;" />
+
+  <div class="question" id="question">
+    Will you forgive me?
+    <div class="button-container">
+      <button id="yesBtn">Yes</button>
+      <button id="noBtn">No</button>
+    </div>
+  </div>
+
+  <script>
+    // First message (hyphenated)
+    const firstLines = [
+      "In-a-world-full-of-noise-and-endless-motion,",
+      "I-found-silence-only-in-your-presence.",
+      "",
+      "You’re-the-calm-in-my-chaos.",
+      "",
+      "Thank-you-for-simply-being-you.",
+      "I-am-sorry-for-my-mistakes-darling."
+    ];
+
+    // Second message (hyphenated)
+    const secondLines = [
+      "Mali-ko-po-na-nag-selos-ako-for-such-small-things",
+      "I-hated-what-I-did",
+      "I-miss-you",
+      "and-I-always-love-you"
+    ];
+
+    const firstMessageContainer = document.getElementById('animated-message');
+    const secondMessageContainer = document.getElementById('second-message');
+
+    function animateText(container, lines, startDelay = 0, onComplete = null) {
+      let delay = startDelay;
+      lines.forEach((line, lineIndex) => {
+        for (let char of line) {
+          const span = document.createElement('span');
+          span.classList.add('letter');
+          span.textContent = char;
+          span.style.animationDelay = `${delay}s`;
+          delay += 0.04;
+          container.appendChild(span);
+        }
+        if (lineIndex !== lines.length - 1) {
+          container.appendChild(document.createElement('br'));
+        }
+      });
+      if (onComplete) {
+        setTimeout(onComplete, delay * 1000 + 500);
+      }
+    }
+
+    // Animate first message
+    animateText(firstMessageContainer, firstLines, 1, () => {
+      // Fade out first photos and first message
+      const photo1 = document.getElementById('photo1');
+      const photo2 = document.getElementById('photo2');
+
+      photo1.style.opacity = 0;
+      photo2.style.opacity = 0;
+      firstMessageContainer.style.opacity = 0;
+
+      setTimeout(() => {
+        photo1.remove();
+        photo2.remove();
+        firstMessageContainer.remove();
+
+        // Show photo3, second message, photo4 with fade in animation
+        const photo3 = document.getElementById('photo3');
+        const photo4 = document.getElementById('photo4');
+
+        photo3.style.animation = 'fadeSlideInTop 2s ease forwards';
+        photo4.style.animation = 'fadeSlideInBottom 2s ease forwards';
+
+        // Set initial opacity 0 to fade from
+        photo3.style.opacity = 0;
+        photo4.style.opacity = 0;
+
+        // Force reflow so animation works properly
+        void photo3.offsetWidth;
+        void photo4.offsetWidth;
+
+        // Animate fade in
+        photo3.style.opacity = 1;
+        photo4.style.opacity = 1;
+
+        // Animate second message
+        secondMessageContainer.style.opacity = 1;
+        animateText(secondMessageContainer, secondLines, 1, () => {
+          // After second message finishes, fade out second message and photos 3,4
+          secondMessageContainer.style.opacity = 0;
+          photo3.style.opacity = 0;
+          photo4.style.opacity = 0;
+
+          setTimeout(() => {
+            secondMessageContainer.remove();
+            photo3.remove();
+            photo4.remove();
+
+            // Show forgiveness question
+            const question = document.getElementById('question');
+            question.classList.add('show');
+          }, 1000);
+        });
+
+        secondMessageContainer.style.display = 'block';
+        photo3.style.display = 'block';
+        photo4.style.display = 'block';
+      }, 1000);
+    });
+
+    // Button handlers
+    document.getElementById('yesBtn').addEventListener('click', () => {
+      window.location.href = "yes.html";
+    });
+
+    document.getElementById('noBtn').addEventListener('click', () => {
+      window.location.href = "no.html";
+    });
+  </script>
+
+</body>
+</html>
