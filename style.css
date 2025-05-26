@@ -60,18 +60,3 @@ body {
   background-color: #d3426e;
 }
 
-/* Sign up link */
-.signup-link {
-  margin-top: 15px;
-  font-size: 14px;
-  color: #666;
-}
-
-.signup-link a {
-  color: #e75480;
-  text-decoration: none;
-}
-
-.signup-link a:hover {
-  text-decoration: underline;
-}
